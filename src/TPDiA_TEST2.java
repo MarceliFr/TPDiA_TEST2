@@ -17,7 +17,7 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Baza");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
