@@ -1,16 +1,20 @@
 package Frames;
 
+import background.CasheQuerryResult;
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TPDiA_TEST2 extends javax.swing.JFrame {
     public static final String dbFilePath = "C:/testDB/test.db";
     public static Connection connection;
+    public ArrayList<CasheQuerryResult>resultCashe;
     
     public TPDiA_TEST2() {
         initComponents();
+        resultCashe = new ArrayList(20);
     }
 
     @SuppressWarnings("unchecked")
@@ -121,18 +125,19 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         try {                                          
             String sql = "SELECT * FROM WORKERS";
-            
+            for(int i=0;i<resultCashe.size();i++){
+                if(resultCashe.get(i).getQuerry().equals(sql)){
+                    readResult(resultCashe.get(i));
+                    resultCashe.get(i).increment();
+                    System.out.println("odczytano z cashe");
+                    return;
+                }
+            }
             Statement stmt = connection.createStatement();
             try (ResultSet rs = stmt.executeQuery(sql)) {
-                while (rs.next()){
-                    resultText.append(rs.getInt("ID") +  "\t" +
-                            rs.getString("FIRST_NAME") + "\t" +
-                            rs.getString("LAST_NAME") + "\t" +
-                            rs.getString("CITY") + "\t" +
-                            rs.getString("EMAIL") + "\t" +
-                            rs.getInt("PHONE_NUMBER"));
-                    resultText.append("\n");
-                }
+                CasheQuerryResult casheQuerryResult = (saveResult(rs, sql));
+                resultCashe.add(casheQuerryResult);
+                readResult(casheQuerryResult);
             } catch (SQLException ex) {
                 Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,7 +176,35 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         File dbFile = new File(dbFilePath);
         return dbFile.exists();
     }
-
+    public CasheQuerryResult saveResult(ResultSet rs, String sql) throws SQLException {
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
+        ArrayList<ArrayList<Object>> resultList = new ArrayList<>();
+        ArrayList<Object> indexes = new ArrayList<>(columns);
+        for(int i=1;i<=rs.getMetaData().getColumnCount();i++){
+            indexes.add(rs.getMetaData().getColumnName(i));
+        }
+        resultList.add(indexes);
+        while (rs.next()) {
+            ArrayList<Object> row = new ArrayList<>(columns);
+            for (int i = 1; i <= columns; ++i) {
+                row.add(rs.getObject(i));
+            }
+            resultList.add(row);
+        }
+        CasheQuerryResult casheQuerryResult = new CasheQuerryResult(resultList, sql);
+        return casheQuerryResult;
+    }
+    private void readResult(CasheQuerryResult casheQuerryResult) {
+        resultText.setText(null);
+        ArrayList<ArrayList<Object>> toRead = casheQuerryResult.getResultList();
+        for (int i=0;i<toRead.size();i++){
+            for (Object get : toRead.get(i)) {
+                resultText.append(get + "\t");
+            }
+            resultText.append("\n");
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton insertToTableButton;
     private javax.swing.JMenu jMenu1;
