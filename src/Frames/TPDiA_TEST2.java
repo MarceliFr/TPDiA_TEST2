@@ -2,15 +2,20 @@ package Frames;
 
 import background.CasheQuerryResult;
 import java.io.File;
+
 import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class TPDiA_TEST2 extends javax.swing.JFrame {
     public static final String dbFilePath = "C:/testDB/test.db";
     public static Connection connection;
+
     public ArrayList<CasheQuerryResult>resultCashe;
+    public static String querry = "";
     
     public TPDiA_TEST2() {
         initComponents();
@@ -27,6 +32,7 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         insertToTableButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         resultText = new javax.swing.JTextArea();
+        createStatementButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -62,6 +68,14 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         resultText.setRows(5);
         jScrollPane2.setViewportView(resultText);
 
+        createStatementButton.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        createStatementButton.setText("Utwórz zapytanie");
+        createStatementButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createStatementButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -73,7 +87,9 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
                     .addComponent(resultLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(insertToTableButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(createStatementButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                         .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -83,11 +99,12 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchButton)
-                    .addComponent(insertToTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(insertToTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(createStatementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(resultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -103,7 +120,9 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,8 +142,9 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        try {                                          
+        try {
             String sql = "SELECT * FROM WORKERS";
+            String sql2 = "SELECT * FROM WORKERS";
             for(int i=0;i<resultCashe.size();i++){
                 if(resultCashe.get(i).getQuerry().equals(sql)){
                     readResult(resultCashe.get(i));
@@ -133,8 +153,15 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
                     return;
                 }
             }
-            Statement stmt = connection.createStatement();
-            try (ResultSet rs = stmt.executeQuery(sql)) {
+            PreparedStatement pstmt  = connection.prepareStatement(sql);
+            PreparedStatement pstmt2  = connection.prepareStatement(sql2);
+            if(pstmt.equals(pstmt2)){
+                System.out.println("Sukces");
+            }else{
+                System.out.println("coś nie tak");
+            }
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
                 CasheQuerryResult casheQuerryResult = (saveResult(rs, sql));
                 resultCashe.add(casheQuerryResult);
                 readResult(casheQuerryResult);
@@ -148,7 +175,19 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     private void insertToTableButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertToTableButtonMouseClicked
         new InsertToTable(connection).setVisible(true);
     }//GEN-LAST:event_insertToTableButtonMouseClicked
-    public static void main(String args[]) {
+    private void createStatementButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createStatementButtonMouseClicked
+        TestPanel testPanel = new TestPanel();
+        Object[] buttons = {"Execute", "Clear", "Cancel"};
+
+        int result = JOptionPane.showOptionDialog(null, testPanel, "Enter a Number",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, buttons, null);
+        if (result == 0) {
+            System.out.println("Działa: "+testPanel.getQuwrry());
+            System.out.println(querry);
+        }
+    }//GEN-LAST:event_createStatementButtonMouseClicked
+    public static void main(String args[]) throws SQLException {
         java.awt.EventQueue.invokeLater(() -> {
             new TPDiA_TEST2().setVisible(true);
         });
@@ -206,6 +245,7 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton createStatementButton;
     private javax.swing.JButton insertToTableButton;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
