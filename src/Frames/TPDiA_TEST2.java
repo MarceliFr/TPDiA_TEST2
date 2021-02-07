@@ -1,25 +1,32 @@
 package Frames;
 
 import background.CasheQuerryResult;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.io.File;
 
 import java.sql.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class TPDiA_TEST2 extends javax.swing.JFrame {
-    public static final String dbFilePath = "C:/testDB/test.db";
+    private static LoadingCache<String, CasheQuerryResult> resultCashe;
+    private static Map<String, CasheQuerryResult> casheMap;
+    public static String dbFilePath = "C:/testDB/test.db";
     public static Connection connection;
-
-    public ArrayList<CasheQuerryResult>resultCashe;
     public static String querry = "";
     
     public TPDiA_TEST2() {
+        casheMap = new HashMap<String, CasheQuerryResult>();
         initComponents();
-        resultCashe = new ArrayList(20);
     }
 
     @SuppressWarnings("unchecked")
@@ -143,29 +150,16 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         try {
-            String sql = "SELECT * FROM WORKERS";
-            String sql2 = "SELECT * FROM WORKERS";
-            for(int i=0;i<resultCashe.size();i++){
-                if(resultCashe.get(i).getQuerry().equals(sql)){
-                    readResult(resultCashe.get(i));
-                    resultCashe.get(i).increment();
-                    System.out.println("odczytano z cashe");
-                    return;
-                }
-            }
-            PreparedStatement pstmt  = connection.prepareStatement(sql);
-            PreparedStatement pstmt2  = connection.prepareStatement(sql2);
-            if(pstmt.equals(pstmt2)){
-                System.out.println("Sukces");
-            }else{
-                System.out.println("coś nie tak");
-            }
+            querry = "SELECT * FROM WORKERS";
             
-            try (ResultSet rs = pstmt.executeQuery()) {
-                CasheQuerryResult casheQuerryResult = (saveResult(rs, sql));
-                resultCashe.add(casheQuerryResult);
-                readResult(casheQuerryResult);
-            } catch (SQLException ex) {
+            PreparedStatement pstmt  = connection.prepareStatement(querry);
+            
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                CasheQuerryResult casheQuerryResult = (saveResult(resultSet));
+                casheMap.put(querry, casheQuerryResult);
+                System.out.println(casheMap.size());
+                readResult(querry);
+            } catch (SQLException | ExecutionException ex) {
                 Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException ex) {
@@ -187,11 +181,12 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             System.out.println(querry);
         }
     }//GEN-LAST:event_createStatementButtonMouseClicked
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws SQLException, InterruptedException {
         java.awt.EventQueue.invokeLater(() -> {
             new TPDiA_TEST2().setVisible(true);
         });
         connection = openDataBase(dbFilePath);
+        cashe();
     }
     public static Connection openDataBase(String dbFilePath){
         connection = null;
@@ -215,7 +210,7 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         File dbFile = new File(dbFilePath);
         return dbFile.exists();
     }
-    public CasheQuerryResult saveResult(ResultSet rs, String sql) throws SQLException {
+    public CasheQuerryResult saveResult(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
         ArrayList<ArrayList<Object>> resultList = new ArrayList<>();
@@ -231,12 +226,13 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             }
             resultList.add(row);
         }
-        CasheQuerryResult casheQuerryResult = new CasheQuerryResult(resultList, sql);
+        CasheQuerryResult casheQuerryResult = new CasheQuerryResult(resultList);
         return casheQuerryResult;
     }
-    private void readResult(CasheQuerryResult casheQuerryResult) {
+    private void readResult(String querry) throws ExecutionException {
         resultText.setText(null);
-        ArrayList<ArrayList<Object>> toRead = casheQuerryResult.getResultList();
+        CasheQuerryResult fromCashe = resultCashe.get(querry);
+        ArrayList<ArrayList<Object>> toRead = fromCashe.getResultList();
         for (int i=0;i<toRead.size();i++){
             for (Object get : toRead.get(i)) {
                 resultText.append(get + "\t");
@@ -256,4 +252,18 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     private javax.swing.JTextArea resultText;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
+    
+    private static void cashe() throws InterruptedException{
+        resultCashe = CacheBuilder.newBuilder()
+            .maximumSize(20)
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .build(new CacheLoader<String, CasheQuerryResult>() {
+            
+            @Override
+            public CasheQuerryResult load(String querry) throws Exception {
+                System.out.println("Z cashe");
+                return casheMap.get(querry);
+            } 
+        });
+    }
 }
