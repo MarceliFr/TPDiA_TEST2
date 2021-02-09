@@ -6,11 +6,10 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class InsertToTable extends javax.swing.JFrame {
+public class InsertToTable extends javax.swing.JDialog {
     private final Connection connection;
     
     InsertToTable(Connection connection) {
-        System.out.println("Dochodzi tu");
         this.connection = connection;
         initComponents();
     }
@@ -27,13 +26,31 @@ public class InsertToTable extends javax.swing.JFrame {
         firstNameLabel = new javax.swing.JLabel();
         lastNameText = new javax.swing.JTextField();
         lastNameLabel = new javax.swing.JLabel();
-        cityText = new javax.swing.JTextField();
-        cityLabel = new javax.swing.JLabel();
-        emailText = new javax.swing.JTextField();
-        emailLabel = new javax.swing.JLabel();
-        phoneNumberText = new javax.swing.JTextField();
-        phoneNumberlLabel = new javax.swing.JLabel();
-        dodajButton = new javax.swing.JButton();
+        idWorkplace_workerText = new javax.swing.JTextField();
+        idWorkplace_workerLabel = new javax.swing.JLabel();
+        idHeadquarters_workerText = new javax.swing.JTextField();
+        idHeadquarters_workerLabel = new javax.swing.JLabel();
+        idManagerText = new javax.swing.JTextField();
+        idManagerLabel = new javax.swing.JLabel();
+        addWorkerButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        workplacesIdLabel = new javax.swing.JLabel();
+        workplacesIdText = new javax.swing.JTextField();
+        workplacesNameLabel = new javax.swing.JLabel();
+        workplacesNameText = new javax.swing.JTextField();
+        workplacesSalaryLabel = new javax.swing.JLabel();
+        workplacesSalaryText = new javax.swing.JTextField();
+        addWorkplaceButton = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        headquartersIdLabel = new javax.swing.JLabel();
+        headquartersIdText = new javax.swing.JTextField();
+        addHeadquartersButton = new javax.swing.JButton();
+        headquartersNameLabel = new javax.swing.JLabel();
+        headquartersNameText = new javax.swing.JTextField();
+        headquartersAddressLabel = new javax.swing.JLabel();
+        headquartersAddressText = new javax.swing.JTextField();
+        headquartersCityLabel = new javax.swing.JLabel();
+        headquartersCityText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
@@ -65,26 +82,26 @@ public class InsertToTable extends javax.swing.JFrame {
         lastNameLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lastNameLabel.setText("Last Name");
 
-        cityText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idWorkplace_workerText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
-        cityLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        cityLabel.setText("City");
+        idWorkplace_workerLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idWorkplace_workerLabel.setText("Id_workplace");
 
-        emailText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idHeadquarters_workerText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
-        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        emailLabel.setText("Email");
+        idHeadquarters_workerLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idHeadquarters_workerLabel.setText("Id_headquarters");
 
-        phoneNumberText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idManagerText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
-        phoneNumberlLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        phoneNumberlLabel.setText("Phone Number");
+        idManagerLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        idManagerLabel.setText("Id_manager");
 
-        dodajButton.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        dodajButton.setText("Dodaj");
-        dodajButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        addWorkerButton.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        addWorkerButton.setText("Dodaj");
+        addWorkerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dodajButtonMouseClicked(evt);
+                addWorkerButtonMouseClicked(evt);
             }
         });
 
@@ -96,19 +113,19 @@ public class InsertToTable extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(phoneNumberlLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(idManagerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(phoneNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(idManagerText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(emailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(idHeadquarters_workerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(idHeadquarters_workerText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(idWorkplace_workerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cityText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(idWorkplace_workerText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lastNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -121,7 +138,7 @@ public class InsertToTable extends javax.swing.JFrame {
                             .addComponent(idText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(dodajButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(addWorkerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,22 +158,174 @@ public class InsertToTable extends javax.swing.JFrame {
                     .addComponent(lastNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cityText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cityLabel))
+                    .addComponent(idWorkplace_workerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idWorkplace_workerLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(idHeadquarters_workerText)
+                    .addComponent(idHeadquarters_workerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(phoneNumberText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(phoneNumberlLabel))
+                    .addComponent(idManagerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idManagerLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dodajButton)
+                .addComponent(addWorkerButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("WORKERS", jPanel1);
+
+        workplacesIdLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        workplacesIdLabel.setText("ID_WORKPLACE");
+
+        workplacesIdText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        workplacesNameLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        workplacesNameLabel.setText("NAME");
+
+        workplacesNameText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        workplacesSalaryLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        workplacesSalaryLabel.setText("SALARY");
+
+        workplacesSalaryText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        addWorkplaceButton.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        addWorkplaceButton.setText("Dodaj");
+        addWorkplaceButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addWorkplaceButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addWorkplaceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(workplacesSalaryLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(workplacesNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(workplacesIdLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(workplacesIdText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(workplacesNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(workplacesSalaryText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(17, 17, 17))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(workplacesIdText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(workplacesIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(workplacesNameText)
+                    .addComponent(workplacesNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(workplacesSalaryText)
+                    .addComponent(workplacesSalaryLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addComponent(addWorkplaceButton)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("WORKPLACES", jPanel2);
+
+        headquartersIdLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        headquartersIdLabel.setText("ID_HEADQUARTERS");
+
+        headquartersIdText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        addHeadquartersButton.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        addHeadquartersButton.setText("Dodaj");
+        addHeadquartersButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addHeadquartersButtonMouseClicked(evt);
+            }
+        });
+
+        headquartersNameLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        headquartersNameLabel.setText("NAME");
+
+        headquartersNameText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        headquartersAddressLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        headquartersAddressLabel.setText("ADDRESS");
+
+        headquartersAddressText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        headquartersCityLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        headquartersCityLabel.setText("CITY");
+
+        headquartersCityText.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(addHeadquartersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(headquartersNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(headquartersNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(headquartersIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(headquartersIdText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(headquartersAddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(headquartersAddressText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(headquartersCityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(headquartersCityText, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headquartersIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headquartersIdText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headquartersNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headquartersNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headquartersAddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headquartersAddressText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headquartersCityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headquartersCityText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(addHeadquartersButton)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("HEADQUARTERS", jPanel3);
 
         jLabel1.setText("Wybór tabeli");
 
@@ -177,38 +346,78 @@ public class InsertToTable extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void dodajButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dodajButtonMouseClicked
+    private void addWorkerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addWorkerButtonMouseClicked
         String id = idText.getText();
         String firstName = firstNameText.getText();
         String lastName = lastNameText.getText();
-        String city = cityText.getText();
-        String email = emailText.getText();
-        String phoneNumber = phoneNumberText.getText();
+        String city = idWorkplace_workerText.getText();
+        String email = idHeadquarters_workerText.getText();
+        String phoneNumber = idManagerText.getText();
         try (Statement statement = connection.createStatement()) {
             statement.execute("INSERT INTO WORKERS VALUES(" +id+ ", '" +firstName+ "', '" +lastName+ "', '" +city+ "', '" +email+ "', " +phoneNumber+ ");");
         } catch (SQLException ex) {
             Logger.getLogger(InsertToTable.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_dodajButtonMouseClicked
-
+        dispose();
+    }//GEN-LAST:event_addWorkerButtonMouseClicked
+    private void addWorkplaceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addWorkplaceButtonMouseClicked
+        String workplaceId = workplacesIdText.getText();
+        String workplaceName = workplacesNameText.getText();
+        String workplaceSalary = workplacesSalaryText.getText();
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("INSERT INTO WORKPLACES VALUES(" +workplaceId+ ", '" +workplaceName+ "', " +workplaceSalary+")");
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertToTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dispose();
+    }//GEN-LAST:event_addWorkplaceButtonMouseClicked
+    private void addHeadquartersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addHeadquartersButtonMouseClicked
+        String headquartersId = headquartersIdText.getText();
+        String headquartersName = headquartersNameText.getText();
+        String headquartersAddress = headquartersAddressText.getText();
+        String headquartersCity = headquartersCityText.getText();
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("INSERT INTO HEADQUARTERS VALUES(" +headquartersId+ ", '" +headquartersName+ "', '"+headquartersAddress+ "', '" +headquartersCity+"')");
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertToTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dispose();
+    }//GEN-LAST:event_addHeadquartersButtonMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel cityLabel;
-    private javax.swing.JTextField cityText;
-    private javax.swing.JButton dodajButton;
-    private javax.swing.JLabel emailLabel;
-    private javax.swing.JTextField emailText;
+    private javax.swing.JButton addHeadquartersButton;
+    private javax.swing.JButton addWorkerButton;
+    private javax.swing.JButton addWorkplaceButton;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JTextField firstNameText;
+    private javax.swing.JLabel headquartersAddressLabel;
+    private javax.swing.JTextField headquartersAddressText;
+    private javax.swing.JLabel headquartersCityLabel;
+    private javax.swing.JTextField headquartersCityText;
+    private javax.swing.JLabel headquartersIdLabel;
+    private javax.swing.JTextField headquartersIdText;
+    private javax.swing.JLabel headquartersNameLabel;
+    private javax.swing.JTextField headquartersNameText;
+    private javax.swing.JLabel idHeadquarters_workerLabel;
+    private javax.swing.JTextField idHeadquarters_workerText;
     private javax.swing.JLabel idLabel;
+    private javax.swing.JLabel idManagerLabel;
+    private javax.swing.JTextField idManagerText;
     private javax.swing.JTextField idText;
+    private javax.swing.JLabel idWorkplace_workerLabel;
+    private javax.swing.JTextField idWorkplace_workerText;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JTextField lastNameText;
-    private javax.swing.JTextField phoneNumberText;
-    private javax.swing.JLabel phoneNumberlLabel;
+    private javax.swing.JLabel workplacesIdLabel;
+    private javax.swing.JTextField workplacesIdText;
+    private javax.swing.JLabel workplacesNameLabel;
+    private javax.swing.JTextField workplacesNameText;
+    private javax.swing.JLabel workplacesSalaryLabel;
+    private javax.swing.JTextField workplacesSalaryText;
     // End of variables declaration//GEN-END:variables
 }

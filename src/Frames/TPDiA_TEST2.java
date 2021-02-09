@@ -20,12 +20,12 @@ import javax.swing.JOptionPane;
 public class TPDiA_TEST2 extends javax.swing.JFrame {
     private static LoadingCache<String, CasheQuerryResult> resultCashe;
     private static Map<String, CasheQuerryResult> casheMap;
-    public static String dbFilePath = "C:/testDB/test.db";
+    public static String dbFilePath = "testDB/test.db";
     public static Connection connection;
     public static String querry = "";
     
     public TPDiA_TEST2() {
-        casheMap = new HashMap<String, CasheQuerryResult>();
+        casheMap = new HashMap<>();
         initComponents();
     }
 
@@ -151,34 +151,62 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         try {
             querry = "SELECT * FROM WORKERS";
-            
-            PreparedStatement pstmt  = connection.prepareStatement(querry);
-            
-            try (ResultSet resultSet = pstmt.executeQuery()) {
-                CasheQuerryResult casheQuerryResult = (saveResult(resultSet));
-                casheMap.put(querry, casheQuerryResult);
-                System.out.println(casheMap.size());
-                readResult(querry);
-            } catch (SQLException | ExecutionException ex) {
-                Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+            resultText.setText("");
+            try (PreparedStatement pstmt = connection.prepareStatement(querry)) {
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    CasheQuerryResult casheQuerryResult = (saveResult(resultSet));
+                    casheMap.put(querry, casheQuerryResult);
+                    System.out.println(casheMap.size());
+                    readResult(querry);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_searchButtonMouseClicked
     private void insertToTableButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertToTableButtonMouseClicked
-        new InsertToTable(connection).setVisible(true);
+        InsertToTable insertToTable = null;
+        if(insertToTable == null){
+            insertToTable = new InsertToTable(connection);
+            insertToTable.setVisible(true);
+        }
     }//GEN-LAST:event_insertToTableButtonMouseClicked
     private void createStatementButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createStatementButtonMouseClicked
         TestPanel testPanel = new TestPanel();
-        Object[] buttons = {"Execute", "Clear", "Cancel"};
+        Object[] buttons = {"Execute", "Cancel"};
 
         int result = JOptionPane.showOptionDialog(null, testPanel, "Enter a Number",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
                 null, buttons, null);
-        if (result == 0) {
-            System.out.println("Działa: "+testPanel.getQuwrry());
-            System.out.println(querry);
+        switch(result){
+            case 0 -> {
+                querry = testPanel.getQuwrry();
+                if("SELECT".equals(querry.split(" ", 0)[0].toUpperCase())){
+                    try (Statement stmt = connection.createStatement()) {
+                        try (ResultSet resultSet = stmt.executeQuery(querry)) {
+                            CasheQuerryResult casheQuerryResult = (saveResult(resultSet));
+                            casheMap.put(querry, casheQuerryResult);
+                            System.out.println(casheMap.size());
+                            readResult(querry);
+                        } catch (ExecutionException ex) {
+                            Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getErrorCode(), "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    try (Statement stmt = connection.createStatement()) {
+                        stmt.executeUpdate(querry);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            }            
         }
     }//GEN-LAST:event_createStatementButtonMouseClicked
     public static void main(String args[]) throws SQLException, InterruptedException {
@@ -188,6 +216,18 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         connection = openDataBase(dbFilePath);
         cashe();
     }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton createStatementButton;
+    private javax.swing.JButton insertToTableButton;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel resultLabel;
+    private javax.swing.JTextArea resultText;
+    private javax.swing.JButton searchButton;
+    // End of variables declaration//GEN-END:variables
     public static Connection openDataBase(String dbFilePath){
         connection = null;
         try {
@@ -198,11 +238,8 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             }else{
                 System.out.println("Baza nie istnieje");
             }
-        } catch ( SQLException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch ( SQLException | ClassNotFoundException e ) {
+            Logger.getLogger(TPDiA_TEST2.class.getName()).log(Level.SEVERE, null, e);
         }
         return connection;
     }
@@ -240,19 +277,6 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             resultText.append("\n");
         }
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton createStatementButton;
-    private javax.swing.JButton insertToTableButton;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel resultLabel;
-    private javax.swing.JTextArea resultText;
-    private javax.swing.JButton searchButton;
-    // End of variables declaration//GEN-END:variables
-    
     private static void cashe() throws InterruptedException{
         resultCashe = CacheBuilder.newBuilder()
             .maximumSize(20)
@@ -261,7 +285,6 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             
             @Override
             public CasheQuerryResult load(String querry) throws Exception {
-                System.out.println("Z cashe");
                 return casheMap.get(querry);
             } 
         });
