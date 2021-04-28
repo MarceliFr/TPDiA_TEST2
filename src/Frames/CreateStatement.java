@@ -68,11 +68,8 @@ public class CreateStatement extends javax.swing.JDialog{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void executeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeButtonActionPerformed
-        
         sql = statementText.getText();
-        TPDiA_TEST2.querry = statementText.getText();
         dispose();
     }//GEN-LAST:event_executeButtonActionPerformed
     private void cancellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancellButtonActionPerformed

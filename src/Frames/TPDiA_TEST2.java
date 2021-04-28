@@ -21,7 +21,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class TPDiA_TEST2 extends javax.swing.JFrame {
     private static LoadingCache<String, CasheQuerryResult> resultCashe;
     public static Connection connection;
-    public static String querry = "";
     
     public TPDiA_TEST2() {
         initComponents();
@@ -78,6 +77,8 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
 
         resultText.setColumns(20);
         resultText.setRows(5);
+        resultText.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        resultText.setDoubleBuffered(true);
         resultText.setEnabled(false);
         jScrollPane2.setViewportView(resultText);
 
@@ -214,7 +215,8 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
                 Scanner myReader = new Scanner(readFile);
                 String stmt = null;
                 while (myReader.hasNextLine()) {
-                    execute(myReader.nextLine());
+                    stmt = myReader.nextLine();
+                    execute(stmt);
                 }
                 System.out.println(stmt);
             } catch (FileNotFoundException ex) {
@@ -232,10 +234,10 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
     private void createStatementButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createStatementButtonMouseClicked
         TestPanel testPanel = new TestPanel();
         Object[] buttons = {"Execute", "Cancel"};
-
+        
         int result = JOptionPane.showOptionDialog(null, testPanel, "Enter a Number", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, null);
         if(result == 0){
-            querry = testPanel.getQuwrry();
+            String querry = testPanel.getQuwrry();
             if("SELECT".equals(querry.split(" ", 0)[0].toUpperCase())){
                 execute(querry);
             }else{
@@ -303,11 +305,12 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         jfc.setFileFilter(fnef);
         jfc.showOpenDialog(null);
         jfc.setName("Znajdowanie bazy danych");
-        if(jfc.getSelectedFile().getAbsolutePath() != null){
+        if(jfc.getSelectedFile() != null){
             path = jfc.getSelectedFile().getAbsolutePath();
             try {
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+                connection.setAutoCommit(false);
                 connectLabel.setText("połączona z bazą: " + connection.getMetaData().getDatabaseProductName());
                 insertToTableButton.setEnabled(true);
                 createStatementButton.setEnabled(true);
@@ -325,19 +328,21 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
         insertToTableButton.setEnabled(false);
         createStatementButton.setEnabled(false);
         readFromFileButton.setEnabled(false);
+        resultText.setText("");
         resultCashe.cleanUp();
         connectLabel.setText("nie połączono z bazą");
     }
     public void saveResult(String querry) throws SQLException {
         ArrayList<ArrayList<Object>> resultList;
-        try (Statement stmt = connection.createStatement(); ResultSet resultSet = stmt.executeQuery(querry)) {
+        try (PreparedStatement stmt = connection.prepareStatement(querry); ResultSet resultSet = stmt.executeQuery()) {
             ResultSetMetaData md = resultSet.getMetaData();
             int columns = md.getColumnCount();
             resultList = new ArrayList<>();
             ArrayList<Object> indexes = new ArrayList<>(columns);
             for(int i=1;i<=resultSet.getMetaData().getColumnCount();i++){
                 indexes.add(resultSet.getMetaData().getColumnName(i));
-            }   resultList.add(indexes);
+            }
+            resultList.add(indexes);
             while (resultSet.next()) {
                 ArrayList<Object> row = new ArrayList<>(columns);
                 for (int i = 1; i <= columns; ++i) {
@@ -373,7 +378,7 @@ public class TPDiA_TEST2 extends javax.swing.JFrame {
             } 
         });
     }
-    private void execute(String nextLine) {
+    private void execute(String querry) {
         try {
             if(resultCashe.getIfPresent(querry) != null){
                 System.out.println("Z cashe");
